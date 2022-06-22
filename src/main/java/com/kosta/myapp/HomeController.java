@@ -35,7 +35,7 @@ public class HomeController {
 		model.addAttribute("myname", "hyein");
 		model.addAttribute("myname2", "혜인");
 		
-		return "home"; //viewÀÌ¸§ÀÌ´Ù. /WEB-INF/views/home.jsp
+		return "home"; //view이름이다. /WEB-INF/views/home.jsp
 	}
 	
 }
