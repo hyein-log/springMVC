@@ -6,7 +6,7 @@ public class Car {
 	private String color;
 	
 	public Car() {
-		System.out.println("default?ƒ?„±?ë¥? ?´?š©?•´?„œ carë¥? ë§Œë“¦");
+		System.out.println("defaultìƒì„±ì ì´ìš©í•´ ìƒì„±ë¨");
 		
 	}
 	public Car(String model, int price, String color) {
@@ -14,7 +14,7 @@ public class Car {
 		this.model = model;
 		this.price = price;
 		this.color = color;
-		System.out.println("argument 3ê°œê? ?ˆ?Š” ?ƒ?„±?ë¡? ?ƒ?„±?œ?‹¤.");
+		System.out.println("argument 3ê°œì¸ ìƒì„±ì ì´ìš©í•´ ìƒì„±ë¨");
 	}
 	public String getModel() {
 		return model;
