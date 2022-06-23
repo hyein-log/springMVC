@@ -10,7 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet" href="../css/common.css">
+
 <style type="text/css">
 table, td {
 border: 1px solid gray;
@@ -30,6 +30,7 @@ background-color: LightSkyBlue;
 </style>
 </head>
 <body>
+<c:set var="path" value="${pageContext.request.contextPath}"></c:set>
 <h1>부서목록</h1>
 <a href="deptInsert.do">신규 부서 등록</a>
 <table>
@@ -38,12 +39,12 @@ background-color: LightSkyBlue;
 <td>부서이름</td>
 <td>매니저</td>
 <td>지역번호</td>
-<td></td>
+<td>${resultMessage }</td>
 
 </tr>
 <c:forEach items="${deptLists }" var="dept">
 <tr>
-<td><a href="../html/dept.do?dept_id=${dept.department_id }">${dept.department_id }</a></td>
+<td><a href="${path}/dept/deptUpdate.do?deptid=${dept.department_id }">${dept.department_id }</a></td>
 <td>${dept.department_name}</td>
 <td>${dept.manager_id }</td>
 <td>${dept.location_id }</td>

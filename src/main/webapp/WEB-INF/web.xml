@@ -15,7 +15,7 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener
 		</listener-class>
 	</listener>
-	
+
 	<!-- 스프링이 한글이 깨지지 않도록 encording을 해놓은 필터임 -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>
@@ -40,8 +40,15 @@
 		</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml
+				/WEB-INF/spring/appServlet/servlet-context2.xml
+			</param-value>
 		</init-param>
+		<init-param>
+			<param-name>throwExceptionIfNoHandlerFound</param-name>
+			<param-value>true</param-value>
+		</init-param>
+
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
@@ -49,5 +56,10 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+
+	<error-page>
+		<error-code>500</error-code>
+		<location>/WEB-INF/views/error/errorPage500_2.jsp</location>
+	</error-page>
 
 </web-app>
