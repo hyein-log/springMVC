@@ -85,7 +85,7 @@ public class BoardVO {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public int getWriter() {
+	public Integer getWriter() {
 		return writer;
 	}
 	public void setWriter(int writer) {

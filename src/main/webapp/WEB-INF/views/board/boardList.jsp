@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<c:set var="path" value="${pageContext.request.contextPath}"></c:set>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <style type="text/css">
 table, td {
 border:1px solid gray;
@@ -22,14 +24,55 @@ background-color: LavenderBlush;
 background-color: SeaShell;
 }
 table { width: 80%; margin: 0 auto;}
+
+$td{
+color: orange;
+}
 </style>
+<script type="text/javascript">
+//SPA(single Page Application)  -> AJAX
+
+function call(url, sendData){
+	$.ajax({
+			url:url,
+			data:sendData,
+			type:"get", 
+			success:function(responseData){
+				$("#here").html(responseData);
+			},
+			fail:function(){
+				
+			}
+		});
+}
+
+$(function(){
+	$("#titlebtn").click(function(){
+ 		call("${path}/board/titleSearch.do", {title:$("#inputData").val()});
+	});
+	$("#writerbtn").click(function(){
+		call("${path}/board/writerSearch.do",{writer:$("#inputData").val()});
+	});
+	$("#regbtn").click(function(){
+		call("${path}/board/regSearch.do", {sdate : $("#sdate").val(), edate: $("#edate").val()});
+	});
+});
+</script>
 </head>
 <body>
-<c:set var="path" value="${pageContext.request.contextPath}"></c:set>
 	<h1>게시판목록</h1>
 	
 	<a href="boardInsert.do">게시글 작성하기</a>
+	
+	<input type="text" id="inputData">
+	<button id="titlebtn">title(like)로 조회</button>
+	<button id = "writerbtn">writer로 조회</button>
+	<button id= "regbtn">일자로 조회</button><br>
+	<input type="date" id = "sdate">
+	<input type="date" id = "edate">
+	<button id = "joinbtn">join 조회</button>
 	<hr>
+	<div id="here">
 	<table>
 	<tr class = color1>
 			<td>순서</td>
@@ -40,7 +83,7 @@ table { width: 80%; margin: 0 auto;}
 			<td>등록일</td>
 			<td>업데이트일</td>
 			<td>작성자</td>
-			<td>${resultMessage }</td>
+			<td id = td>${resultMessage }</td>
 		</tr>
 		<c:forEach items="${boardLists }" var = "board" varStatus="status">
 		
@@ -57,7 +100,7 @@ table { width: 80%; margin: 0 auto;}
 		</tr>
 		</c:forEach>
 	</table>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	</div>
 	<script>
 	$(function(){
 		//# : 아이디를 의미함. 아이디는 문서 내에서 유일함.

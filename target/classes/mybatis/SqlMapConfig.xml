@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?> <!-- PI -->
+
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+<settings>
+  <setting name="logImpl" value="LOG4J"/>
+  <setting name="jdbcTypeForNull" value="NULL"/> <!-- null이 들어오면 그 type에 맞게 null값을 넣어라 -->
+</settings>
+   <typeAliases>
+      <typeAlias type="com.kosta.model.dto.DeptDTO" alias="deptvo"/>
+      <typeAlias type="com.kosta.model.dto.BoardVO" alias="boardvo"/>
+   </typeAliases>
+</configuration>

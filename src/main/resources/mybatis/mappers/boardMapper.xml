@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.board"> <!-- 내가 이름 정함. 절대로 중복되지 않을 만한 이름으로 정해야함 -->
+	<select id="selectAll" resultType="boardvo">
+	select * from tbl_board order by 1 desc
+	</select>
+	<select id="selectByBno" parameterType="int" resultType="boardvo">
+	select * from tbl_board where bno = #{bno} order by 1
+	</select>
+	<select id="selectBywriter" parameterType="int" resultType="boardvo">
+	select * from tbl_board where writer = #{writer} order by 1
+	</select>
+	<select id="selectBytitle" parameterType="String" resultType="boardvo">
+	select * from tbl_board
+	<if test="title!=''">
+	 where title like #{title} 
+	</if>
+	order by 1
+	</select>
+	<select id="selectByregdate" parameterType="map" resultType="boardvo">
+	select * from tbl_board where regdate between #{sdate} and #{edate} order by 1
+	</select>
+	<insert id="insert" parameterType ="boardvo">
+	INSERT INTO tbl_board VALUES(seq_bno.nextval,#{title},#{content},#{writer},sysdate,sysdate,#{pic})
+	</insert>
+	<update id="update" parameterType ="boardvo" >
+	update tbl_board set title = #{title}, content =#{content}, update_date = sysdate where  bno =#{bno}
+	</update>
+	<delete id="delete" parameterType="int">
+	delete from tbl_board where bno = #{bno}
+	</delete>
+	<select id="boardEmpInfo" resultType="com.kosta.model.dto.BoardEmpVO">
+	SELECT b.BNO , b.TITLE , b.CONTENT , e.FIRST_NAME ||e.LAST_NAME FROM TBL_BOARD b JOIN EMPLOYEES e on(b.writer = e.employee_id)
+	</select>
+</mapper>

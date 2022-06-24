@@ -14,13 +14,14 @@ import com.kosta.model.dto.BoardVO;
 @Service
 public class BoardService {
 	@Autowired
-	BoardDAO boardDAO;
+	BoardDAOMybatis boardDAO;
+	//BoardDAO boardDAO;
 	
 	public List<BoardEmpVO> selectallJoin() {
 		return boardDAO.selectallJoin();
 	}
-	public List<BoardVO> select() {
-		return boardDAO.select();
+	public List<BoardVO> selectAll() {
+		return boardDAO.selectAll();
 	}
 	
 	public BoardVO selectByBno(int bno) {
