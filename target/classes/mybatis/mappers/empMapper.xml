@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.emp"> <!-- 내가 이름 정함. 절대로 중복되지 않을 만한 이름으로 정해야함 -->
+	<select id="selectAll" resultType="com.kosta.model.dto.EMPVO"> <!-- default 생성자로 new해서 set에 값을 넣어줌 -->
+		select * from employees order by 1
+	</select>
+	
+	<select id= "selectByDept" resultType="com.kosta.model.dto.EMPVO" parameterType="int">
+		select * from employees where department_id = #{id} order by 1
+	</select>
+	<select id= "selectByManager" resultType="com.kosta.model.dto.EMPVO" parameterType="int">
+		select * from employees where manager_id = #{id} order by 1
+	</select>
+	<select id= "selectByJob" resultType="com.kosta.model.dto.EMPVO" parameterType="string">
+		select * from employees where job_id = #{id} order by 1
+	</select>
+	<select id= "selectJobAll" resultType="com.kosta.model.dto.JobVO">
+		select * from jobs order by 1
+	</select>
+	<select id= "selectByEmail" resultType="com.kosta.model.dto.EMPVO" parameterType="string">
+		select * from employees where email = #{email} order by 1
+	</select>
+	<select id= "selectByCondition" resultType="com.kosta.model.dto.EMPVO" parameterType="map">
+		select * from employees
+		where salary >= #{salary}
+		<if test="department_id!=0">
+		and department_id = #{department_id}
+		</if>
+		<if test="job_id!=null">
+		and job_id = #{job_id}
+		</if>
+		<if test="hire_date!=null">
+		and hire_date >= #{hire_date}
+		</if>
+		<!-- 동적 sql -->
+	</select>
+	<select id= "selectById" resultType="com.kosta.model.dto.EMPVO" parameterType="int">
+		select * from employees where employee_id = #{id}
+	</select>
+	<insert id="insert" parameterType="com.kosta.model.dto.EMPVO">
+		INSERT INTO EMPLOYEES(employee_id, first_name, last_name, job_id, email, manager_id, department_id, phone_number, salary, hire_date, commission_pct) 
+		VALUES(#{employee_id},#{first_name},#{last_name},#{job_id},#{email},#{manager_id},#{department_id},#{phone_number},#{salary},#{hire_date},#{commission_pct})
+	</insert>
+	<update id="update" parameterType="com.kosta.model.dto.EMPVO" >
+		UPDATE EMPLOYEES 
+		SET FIRST_NAME= #{FIRST_NAME}, 
+		LAST_NAME =#{LAST_NAME},
+		EMAIL =#{EMAIL},
+		PHONE_NUMBER =#{PHONE_NUMBER},
+		HIRE_DATE =#{HIRE_DATE},
+		JOB_ID =#{JOB_ID},
+		SALARY =#{SALARY},
+		COMMISSION_PCT =#{COMMISSION_PCT},
+		MANAGER_ID = #{MANAGER_ID},
+		DEPARTMENT_ID = #{DEPARTMENT_ID}
+		WHERE EMPLOYEE_ID =#{EMPLOYEE_ID} 
+	</update>
+	
+	<delete id="delete" parameterType="com.kosta.model.dto.EMPVO">
+		delete from employees where employee_id = #{id}
+	</delete>
+	<delete id="deleteByDept" parameterType="com.kosta.model.dto.EMPVO">
+		delete from employees where department_id = #{id}
+	</delete>
+	<select id="selectManager" resultType="com.kosta.model.dto.EMPVO">
+	select * from employees where employee_id in (select distinct manager_id from employees)
+	</select>
+	<select id="selectByEmailDuplication" resultType="int" parameterType="string">
+	select count(*) from employees where email =#{email}
+	</select>
+</mapper>
