@@ -147,11 +147,11 @@ function f8(){
 	var sal = $("#inputData3").val();
 	var hire_date = $("#inputData4").val();
 	$.ajax({
-		url:"${path}/emp/selectByCondition.do/"+deptid+jobid+sal+hire_date,
-		success: function(responseData){
-			printEmp(responseData);
-		}
-	});
+		 url:`${path}/emp/empByCondition.do/\${deptid}/\${jobid}/\${sal}/\${hire_date}`,
+		 success: function(responseData){
+			 printEmp(responseData);
+		 }
+	 });
 }
 function printEmpOne(item){
 	$("input[name='employee_id']").val(item["employee_id"]);
