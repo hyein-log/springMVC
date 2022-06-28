@@ -108,8 +108,9 @@ public class EmpRestController {
 
 	@PutMapping(value = "/empupdate.do", consumes = "application/json")
 	public String update(@RequestBody EMPVO emp) {
+		logger.info( "수정할 데이터:" + emp);
 		int result = empService.empUpdate(emp);
-		return result + "";
+		return result+"";
 	}
 
 	@DeleteMapping(value = "/empdelete.do/{empid}")

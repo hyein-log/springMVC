@@ -32,9 +32,45 @@ $(function(){
 	$("#btnByCondition").click(f8);
 	$("#btninsert").click(f9);
 	$("#btnupdate").click(f10);
+	$("#btndelete").click(f11);
+	$("#btnemailDup").click(f12);
+	$("#btnByDept").click(f13);
 });
+
+function f13(){
+	 var deptid =  $("#inputData").val() ;
+	 $.ajax({
+		 url:"${path}/emp/selectByDept.do/" + deptid,
+		 success: function(responseData){
+			 printEmp(responseData);
+		 }
+	 });
+}
+
+function f12(){
+	 var email =  $("#inputData").val() ;
+	 $.ajax({
+		 url:"${path}/emp/emailDup.do/" + email,
+		 success: function(responseData){
+			 $("#here").html(responseData);
+		 }
+	 });
+}
+function f11(){
+    var empid = $("input[name='employee_id']").val();
+    alert(empid);
+	$.ajax({
+		url:"${path}/emp/empdelete.do/"+empid,
+		type:"delete",
+		success:function(responseData){
+			alert(responseData + "건 삭제")
+		}
+	}); 	 
+}
+
+
 function makeJson(){
-	var s = $("#myfrm").serialize();
+	//var s = $("#myfrm").serialize();
 	var arr = $("#myfrm").serializeArray();
 	console.log(arr);
 	var obj={};
@@ -45,12 +81,12 @@ function makeJson(){
 }
 function f10(){
 	$.ajax({
-		url:"${path}/emp/update.do",
+		url:"${path}/emp/empupdate.do",
 		type:"put", //put은 수정할거라는 것을 의미함
 		data:makeJson(),
 		contentType : "application/json;charset=utf-8",
 		success:function(responseData){
-			alert(responseData+"건");
+			alert(responseData+"건 수정");
 		}
 	});
 	
@@ -63,7 +99,7 @@ function f9(){
 		data:makeJson(),
 		contentType : "application/json;charset=utf-8",
 		success:function(responseData){
-			alert(responseData+"건");
+			alert(responseData+"건 입력");
 		}
 	});
 	
@@ -77,15 +113,13 @@ function f1(){
 	});
 }
 function f2(empid){
-	if(typeof(empid)=="number") empid = $("#inputData").val();
-	if(typeof(empid)!="number") empid = $("#inputData").val();
-	$.ajax({
-		url:"${path}/emp/empdetail.do/"+empid,
-		success: function(responseData){
-			console.log(responseData);
-			printEmpOne(responseData);
-		}
-	});
+	 if(typeof(empid)!="number") empid = $("#inputData").val() 
+	 $.ajax({
+		 url:"${path}/emp/empdetail.do/"+ empid,
+		 success: function(responseData){
+			 printEmpOne(responseData);
+		 }
+	 });
 }
 function f3(){
 	$.ajax({
@@ -100,7 +134,7 @@ function f4(){
 	$.ajax({
 		url:"${path}/emp/selectByManager.do/"+mid,
 		success: function(responseData){
-			printEmpOne(responseData);
+			 printEmp(responseData);
 		}
 	});
 }
@@ -109,7 +143,6 @@ function f5(){
 	$.ajax({
 		url:"${path}/emp/selectByEmail.do/"+email,
 		success: function(responseData){
-			alert(responseData);
 			printEmpOne(responseData);
 		}
 	});
@@ -132,9 +165,9 @@ function f6(){
 	});
 }
 function f7(){
-	var jobid =  $("#inputData").val();
+	var job_id =  $("#inputData").val();
 	$.ajax({
-		url:"${path}/emp/selectByJob.do/"+jobid,
+		url:"${path}/emp/selectByJob.do/"+job_id,
 		success: function(responseData){
 			console.log(responseData);
 			printEmp(responseData);
@@ -147,24 +180,31 @@ function f8(){
 	var sal = $("#inputData3").val();
 	var hire_date = $("#inputData4").val();
 	$.ajax({
-		 url:`${path}/emp/empByCondition.do/\${deptid}/\${jobid}/\${sal}/\${hire_date}`,
+		 url:`${path}/emp/selectByCondition.do/\${deptid}/\${jobid}/\${sal}/\${hire_date}`,
 		 success: function(responseData){
 			 printEmp(responseData);
 		 }
 	 });
 }
 function printEmpOne(item){
-	$("input[name='employee_id']").val(item["employee_id"]);
-	$("input[name='first_name']").val(item["first_name"]);
-	$("input[name='last_name']").val(item["last_name"]);
-	$("input[name='email']").val(item["email"]);
-	$("input[name='phone_number']").val(item["phone_number"]);
-	$("input[name='hire_date']").val(item["hire_date"]);
-	$("input[name='job_id']").val(item["job_id"]);
-	$("input[name='salary']").val(item["salary"]);
-	$("input[name='commission_pct']").val(item["commission_pct"]);
-	$("input[name='manager_id']").val(item["manager_id"]);
-	$("input[name='department_id']").val(item["department_id"]);
+	var output = ``;
+	$("#here").html(output);
+	 //일자, select tag의 selected설정 
+	 $("select[name='department_id']").val(item.department_id)
+	                      .prop("selected", true);
+	 $("input[name='hire_date']").val(new Date(item.hire_date).toJSON().split('T')[0]);
+	 $("input[name='manager_id']").val(item["manager_id"]).prop("selected", true);
+	 $("input[name='job_id']").val(item["job_id"]).prop("selected", true);
+	 
+	 
+	 $("input[name='employee_id']").val(item["employee_id"]);
+	 $("input[name='first_name']").val(item["first_name"]);
+	 $("input[name='last_name']").val(item["last_name"]);
+	 $("input[name='email']").val(item["email"]);
+	 $("input[name='phone_number']").val(item["phone_number"]);
+	 $("input[name='commission_pct']").val(item["commission_pct"]);
+
+	 $("input[name='salary']").val(item["salary"]);
 
 }
 function printEmp(emplist){
@@ -211,15 +251,11 @@ function printEmp(emplist){
 </head>
 <body>
 	<h1>@RestController연습</h1>
-	<img alt="" src="">
-	조회조건1(공통):
-	<input type="text" id="inputData">
-	조회조건2(jobid):
-	<input type="text" id="inputData2">
-	조회조건3(sal):
-	<input type="number" id="inputData3" value="0">
-	조회조건4(hire_date):
-	<input type="text" id="inputData4">
+	<img alt="이미지" src="${path}/images/muffin.png">
+조회조건1(공통):<input type="text" id="inputData"><br>
+조회조건2(jobid):<input type="text" id="inputData2" value="IT_PROG"><br>
+조회조건3(sal):<input type="number" id="inputData3" value="0"><br>
+조회조건4(hire_date):<input type="date" id="inputData4" value="2007-01-01"><br>
 	<br>
 	<button id="btnRetrieveAll">모든직원조회</button>
 	<button id="btnjoblist">모든직업조회</button>
@@ -307,9 +343,7 @@ function printEmp(emplist){
       <label> 급여 : </label>
 <input class="form-control" type="text" name="salary" >
 </div>
-<input class="btn btn-primary" type="submit" value="입력하기">
-<input  class="btn btn-danger" type="reset" value="취소하기">
-<input  class="btn btn-primary" type="button" value="목록보기" id ="emplist">
+
 </form>
 </body>
 </html>
